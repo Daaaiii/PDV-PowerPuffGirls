@@ -19,7 +19,7 @@ const cadastrarUsuario = async (req, res) => {
     try {
         const usuarioExistente = await knex('users').where({ email });
 
-        if (!usuarioExistente) {
+        if (usuarioExistente) {
             return res.status(400).json("O email já está em uso por outro usuário");
         }
 
