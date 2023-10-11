@@ -1,11 +1,11 @@
-
 const express = require('express')
+const usuarios = require('./controladores/usuarios');
 
 const rotas = express()
 //TODO: fazer rotas
 // rotas.get('/categoria',)
 
-// rotas.post('/usuario',)
+rotas.post('/usuario', usuarios.cadastrarUsuario);
 // rotas.post('/login',)
 //* A partir daqui precisa verificação
 // rotas.use()
