@@ -12,7 +12,7 @@ rotas.post('/login', login)
 
 rotas.use(verificaLogin);
 
-// rotas.get('/usuario',)
+rotas.get('/usuario',usuarios.detalharUsuario )
 // rotas.put('/usuario',)
 
 module.exports = rotas;
