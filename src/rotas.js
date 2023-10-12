@@ -16,5 +16,7 @@ rotas.use(verificaLogin);
 
 // rotas.get('/usuario',)
 rotas.put('/usuario', validarRequisicao(usuarioSchema) , usuarios.editarUsuario);
+rotas.get('/usuario',usuarios.detalharUsuario )
+// rotas.put('/usuario',)
 
 module.exports = rotas;
