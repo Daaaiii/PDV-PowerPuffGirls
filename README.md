@@ -143,7 +143,11 @@ Este projeto foi documentado utilizando o Swagger.
 
 Para acessar a documentação, inicialize o projeto com `npm run dev`;
 
-Abra `http://localhost:3000/doc` no navegador.
+Abra `http://localhost:3000/doc` no navegador para visualizar localmente.
+
+Para visualizar o Swagger no servidor utilize `https://faithful-bonnet-elk.cyclic.app/doc`
+
+
 
 
 
