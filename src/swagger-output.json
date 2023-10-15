@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "The PowerpuffGirls",
+    "description": "Desafio final da Cubos para criação de um PDV"
   },
   "host": "localhost:3000",
   "basePath": "/",
@@ -13,7 +13,7 @@
   "paths": {
     "/categoria": {
       "get": {
-        "description": "",
+        "description": "Listar categorias",
         "responses": {
           "200": {
             "description": "OK"
@@ -26,7 +26,7 @@
     },
     "/usuario": {
       "post": {
-        "description": "",
+        "description": "Cadastrar usuário",
         "parameters": [
           {
             "name": "body",
@@ -57,7 +57,7 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualizar cadstro do usuário",
         "parameters": [
           {
             "name": "authorization",
@@ -102,7 +102,7 @@
         }
       },
       "get": {
-        "description": "",
+        "description": "Listar usuário",
         "parameters": [
           {
             "name": "authorization",
@@ -131,7 +131,7 @@
     },
     "/login": {
       "post": {
-        "description": "",
+        "description": "Realiza login do usuário",
         "parameters": [
           {
             "name": "body",
