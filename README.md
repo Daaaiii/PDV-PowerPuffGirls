@@ -22,11 +22,11 @@ A aplicação conta com diversas funcionalidades, permitindo ao usuário se cada
 
 1) Faça um clone do projeto
 ```bash
-git clone https://github.com/Daaaiii/desafio-backend-m03-b2bt05
+git clone https://github.com/Daaaiii/PDV-PowerPuffGirls.git
 ```
 2) Abra o diretório do projeto
 ```bash
-cd desafio-backend-m03-b2bt05
+cd PDV-PowerPuffGirls
 ```
 3) Instale as dependências utilizando o comando:
 ```bash
@@ -39,7 +39,11 @@ npm i
 |Express| 4.18.2|
 |Nodemon  | 3.0.1 |
 |PG  | 8.11.3 |
+|Dotenv | 16.3.1 |
 |Json Web Token | 9.0.2 |
+|Knex | 3.0.1|
+|Joi | 17.11.0|
+|Cors | 2.8.5
 |Bcrypt  | 5.1.1 |
 |Swagger | 5.0.0 |
 
@@ -48,7 +52,7 @@ npm i
 ```bash
 npm run dev
 ```
-:warning: Para verificar as rotas, pode-se importar o arquivo `Desafio modulo 3.postman_collection.json` no Postman ou Insomnia, ou utilizar a extensão do Postman no VsCode.
+:warning: Para verificar as rotas, pode-se importar o arquivo `Desafio Final.postman_collection.json` no Postman ou Insomnia, ou utilizar a extensão do Postman no VsCode.
 
 ## Verificando os endpoints
 
@@ -132,7 +136,6 @@ Validações:
     -   O endpoint deverá responder com um array de todas as categorias cadastradas no sistema;     
     -  Caso não exista nenhuma categoria cadastrada, deverá responder com array vazio.
 
-![Listar categorias](./gifs-postman/listar-categorias.gif)<br/>
 
 
 ## Documentação
@@ -140,7 +143,9 @@ Este projeto foi documentado utilizando o Swagger.
 
 Para acessar a documentação, inicialize o projeto com `npm run dev`;
 
-Abra `http://localhost/3000/doc` no navegador.
+Abra `http://localhost:3000/doc` no navegador.
+
+
 
 ## Tecnologias Utilizadas
 [![My Skills](https://skillicons.dev/icons?i=js,nodejs,postman,express,git,github,postgres,swagger )](https://skillicons.dev)
@@ -160,7 +165,11 @@ Para enviar mudanças ou atualizações de um ambiente de implantação para out
 
 [Beatriz Lago](https://github.com/Beatrizlagosb)
 
+[Bruna Fernandes](https://github.com/BrunagFernandes)
+
 [Daiane Bolzan](https://www.linkedin.com/in/daiane-deponti-bolzan/)
+
+[Julia Ajpert](https://github.com/jajpert)
 
 ## Licença
 [MIT](LICENSE)

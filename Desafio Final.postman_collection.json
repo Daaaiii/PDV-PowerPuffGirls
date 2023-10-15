@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "3e21d7b7-3a3e-4628-b414-de4503b39696",
+		"name": "Desafio Final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29045016",
+		"_collection_link": "https://red-sunset-324235.postman.co/workspace/CUBOS~3cf48307-ff8b-4630-af34-af3cbb3d8c43/collection/29045016-3e21d7b7-3a3e-4628-b414-de4503b39696?action=share&source=collection_link&creator=29045016"
+	},
+	"item": [
+		{
+			"name": "Cadastrar Usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Julia\",\r\n    \"email\":\"julia@gmail.com\",\r\n    \"senha\": \"dai123$D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://faithful-bonnet-elk.cyclic.app/usuario",
+					"protocol": "https",
+					"host": [
+						"faithful-bonnet-elk",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"email\":\"dai@gmail.com\",\r\n    \"senha\": \"dai123$D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://faithful-bonnet-elk.cyclic.app/login",
+					"protocol": "https",
+					"host": [
+						"faithful-bonnet-elk",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "atualizar usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTY5NzM5NjM3OSwiZXhwIjoxNjk3NDI1MTc5fQ.9yI4iR8Q8eeYQX3XgvreSw0krQWT22Y3BobkbfMeGpg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Julia 2\",\r\n    \"email\": \"julia@gmail.com\",\r\n    \"senha\": \"ju123$D\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://faithful-bonnet-elk.cyclic.app//usuario",
+					"protocol": "https",
+					"host": [
+						"faithful-bonnet-elk",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"",
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar usuário",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTY5NzM5NjM3OSwiZXhwIjoxNjk3NDI1MTc5fQ.9yI4iR8Q8eeYQX3XgvreSw0krQWT22Y3BobkbfMeGpg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://faithful-bonnet-elk.cyclic.app/usuario",
+					"protocol": "https",
+					"host": [
+						"faithful-bonnet-elk",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar categorias",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://faithful-bonnet-elk.cyclic.app/categoria",
+					"protocol": "https",
+					"host": [
+						"faithful-bonnet-elk",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"categoria"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
