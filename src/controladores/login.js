@@ -8,7 +8,7 @@ const login = async (req, res) => {
 
     try{
         
-        const usuario = await knex ('users').where({email}).first();
+        const usuario = await knex ('usuarios').where({email}).first();
 	
       
         if (!usuario){
