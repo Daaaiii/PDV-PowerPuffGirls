@@ -12,6 +12,8 @@ const usuarioSchema = require("./validacoes/usuario");
 const loginSchema = require("./validacoes/login");
 const { cadastrarCliente } = require("./controladores/clientes");
 const clienteSchema = require("./validacoes/cliente");
+const { cadastrarProduto } = require("./controladores/produtos");
+const produtoSchema = require("./validacoes/produto");
 
 const rotas = express();
 
@@ -25,7 +27,7 @@ rotas.use(verificaLogin);
 rotas.put("/usuario", validarRequisicao(usuarioSchema), editarUsuario);
 rotas.get("/usuario", detalharUsuario);
 
-rotas.post("/produto");
+rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
 rotas.put("/produto/:id");
 rotas.get("/produto");
 rotas.get("/produto/:id");
