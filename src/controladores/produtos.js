@@ -46,7 +46,27 @@ const listarProdutos = async (req, res) => {
             produtos = await knex("produtos").select("*");
         }
 
-        return res.status(200).json(produtos);
+    return res.status(200).json(produtos);
+
+    } catch (error) {
+        return res.status(400).json({ mensagem: error.message });
+    }
+}
+
+const excluirProduto = async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        const produtoExistente = await knex("produtos").where({id}).first();
+
+        if (!produtoExistente) 
+        {
+            return res.status(400).json("O produto informado não existe");
+        }
+
+        const produtoExcluido = await knex('produtos').del().where({id}).returning('*');
+        return res.status(200).json(produtoExcluido);
+
 
     } catch (error) {
         return res.status(400).json({ mensagem: error.message });
@@ -55,5 +75,6 @@ const listarProdutos = async (req, res) => {
 
 module.exports = {
     cadastrarProduto, 
-    listarProdutos
+    listarProdutos,
+    excluirProduto
 }
