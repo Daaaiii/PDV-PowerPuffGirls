@@ -12,7 +12,7 @@ const usuarioSchema = require("./validacoes/usuario");
 const loginSchema = require("./validacoes/login");
 const { cadastrarCliente } = require("./controladores/clientes");
 const clienteSchema = require("./validacoes/cliente");
-const { cadastrarProduto, listarProdutos } = require("./controladores/produtos");
+const { cadastrarProduto, listarProdutos, excluirProduto } = require("./controladores/produtos");
 const produtoSchema = require("./validacoes/produto");
 
 const rotas = express();
@@ -31,7 +31,7 @@ rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
 rotas.put("/produto/:id");
 rotas.get("/produto", listarProdutos);
 rotas.get("/produto/:id");
-rotas.delete("produto/:id");
+rotas.delete("produto/:id", excluirProduto);
 
 rotas.post("/cliente",validarRequisicao(clienteSchema), cadastrarCliente);
 rotas.put("cliente/:id");
