@@ -29,7 +29,7 @@ const cadastrarCliente = async (req, res) => {
 	}
 };
 
-const listarClientes = async (req, res) => {
+const listarClientes = async (_, res) => {
 	try {
 		const cliente = await knex("clientes");
 
