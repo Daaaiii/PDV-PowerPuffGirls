@@ -23,7 +23,6 @@ const verificaLogin = async (req, res, next) => {
 		const {senha, ...usuario} = usuarioExiste;
 
 		req.usuario = usuario;
-
 		next();
 	} catch (error) {
 		return res.status(400).json(error.message);
