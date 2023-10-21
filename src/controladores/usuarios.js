@@ -5,7 +5,7 @@ const cadastrarUsuario = async (req, res) => {
     const { nome, email, senha } = req.body;
 
     try {
-        const usuarioExistente = await knex("users").where({ email }).first();
+        const usuarioExistente = await knex("usuarios").where({ email }).first();
 
         if (usuarioExistente) {
             return res.status(400).json("O email já está em uso por outro usuário");
@@ -13,7 +13,7 @@ const cadastrarUsuario = async (req, res) => {
 
         const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-        const usuario = await knex("users")
+        const usuario = await knex("usuarios")
             .insert({ nome, email, senha: senhaCriptografada })
             .returning("*");
 
@@ -32,7 +32,7 @@ const editarUsuario = async (req, res) => {
     const { id } = req.usuario;
 
     try {
-        const usuarioExiste = await knex("users").where({ id }).first();
+        const usuarioExiste = await knex("usuarios").where({ id }).first();
 
         if (!usuarioExiste) {
             return res.status(404).json({ mensagem: "Usuario não encontrado" });
@@ -41,7 +41,7 @@ const editarUsuario = async (req, res) => {
         const senhaCriptografada = await bcrypt.hash(senha, 10);
 
         if (email !== req.usuario.email) {
-            const emailUsuarioExiste = await knex("users").where({ email }).first();
+            const emailUsuarioExiste = await knex("usuarios").where({ email }).first();
 
             if (emailUsuarioExiste) {
                 res.status(400).json({ mensagem: "O Email já existe." });
@@ -49,7 +49,7 @@ const editarUsuario = async (req, res) => {
             }
         }
 
-        await knex("users").where({ id }).update({
+        await knex("usuarios").where({ id }).update({
             nome,
             email,
             senha: senhaCriptografada,
