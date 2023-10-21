@@ -1,4 +1,4 @@
-
+const bcrypt = require("bcrypt");
 const knex = require("../db");
 
 const cadastrarCliente = async (req, res) => {
@@ -12,7 +12,7 @@ const cadastrarCliente = async (req, res) => {
         }
 
         const cliente = await knex("clientes")
-            .insert({ nome, email,cpf, cep, rua, numero, bairro, cidade, estado })
+            .insert({ nome, email, cpf, cep, rua, numero, bairro, cidade, estado })
             .returning("*");
 
         if (!cliente) {
@@ -25,4 +25,36 @@ const cadastrarCliente = async (req, res) => {
     }
 };
 
-module.exports = {cadastrarCliente}
+const listarClientes = async (req, res) => {
+    return res.status(200).json(req.usuario);
+};
+
+const editarCliente = async (req, res) => {
+    const { nome, email, cpf } = req.body;
+    const { id } = req.usuario;
+
+    try {
+        const usuarioExiste = await knex("usuarios").where({ id }).first();
+
+        if (!usuarioExiste) {
+            return res.status(404).json({ mensagem: "Usuario não encontrado" });
+        }
+
+        await knex("usuarios").where({ id }).update({
+            nome,
+            email,
+            cpf
+        });
+
+        res.status(204).send();
+        return;
+    } catch (error) {
+        return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    }
+};
+
+module.exports = {
+    cadastrarCliente,
+    listarClientes,
+    editarCliente
+}
