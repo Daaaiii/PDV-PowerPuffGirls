@@ -82,8 +82,34 @@ const editarCliente = async (req, res) => {
 	}
 };
 
+const detalharCliente = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const clienteEncontrado = await knex
+        .select("*")
+        .from("clientes")
+        .where({ id })
+        .first();
+  
+      if (!clienteEncontrado) {
+        return res.status(404).json({ mensagem: "Cliente não localizado" });
+      }
+  
+      return res.status(200).json(clienteEncontrado);
+    } catch (error) {
+      return res.status(500).json({ mensagem: error.message });
+    }
+  };
+
 module.exports = {
+
+    cadastrarCliente,
+    listarClientes,
+    editarCliente,
+    detalharCliente,
 	cadastrarCliente,
 	listarClientes,
 	editarCliente,
 };
+
