@@ -5,10 +5,15 @@ const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
 
     try {
-        const clienteExistente = await knex("clientes").where({ email }).first();
+        const emailExistente = await knex("clientes").where({ email }).first();
 
-        if (clienteExistente) {
+        if (emailExistente) {
             return res.status(400).json("O email já está em uso por outro cliente");
+        }
+        const cpfExistente = await knex("clientes").where({ cpf }).first();
+
+        if (cpfExistente) {
+            return res.status(400).json("Cpf já cadastrado");
         }
 
         const cliente = await knex("clientes")
