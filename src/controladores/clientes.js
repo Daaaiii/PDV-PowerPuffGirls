@@ -49,16 +49,16 @@ const editarCliente = async (req, res) => {
 			return res.status(404).json({mensagem: "Cliente não encontrado"});
 		}
 		if (email) {
-			
-			const emailExistente = await knex("clientes").where({email}).first();
-			if (emailExistente) {
+            const emailExistente = await knex("clientes").where({email}).first();
+			if (clienteExiste.email !== email && emailExistente) {
 				return res.status(400).json("O email já está em uso por outro cliente");
 			}
+						
 		}
 		if (cpf) {
 			const cpfExistente = await knex("clientes").where({cpf}).first();
 
-			if (cpfExistente) {
+			if (clienteExiste.cpf !== cpf && cpfExistente) {
 				return res.status(400).json("Cpf já cadastrado");
 			}
 		}
