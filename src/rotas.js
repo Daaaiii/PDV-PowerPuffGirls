@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require('./intermediarios/multer');
+
 const {
 	cadastrarUsuario,
 	editarUsuario,
@@ -72,7 +74,7 @@ rotas.get(
 
 rotas.post(
 	"/produto",
-	validarRequisicao(produtoSchema),
+	validarRequisicao(produtoSchema),multer.single('produto_imagem'),
 	cadastrarProduto
 	// #swagger.tags = ['Produto']
 	// #swagger.description = 'Endpoint para cadastrar produto.
@@ -118,5 +120,14 @@ rotas.get("/cliente/:id?", detalharCliente
 // #swagger.tags = ['Cliente']
 // #swagger.description = 'Endpoint para detalhar cliente.
 );
+
+rotas.post('/pedido', 
+// #swagger.tags = ['Pedido']
+// #swagger.description = 'Endpoint para cadastrar pedido.
+)
+rotas.get('/pedido',
+// #swagger.tags = ['Pedido']
+// #swagger.description = 'Endpoint para listar pedidos.
+)
 
 module.exports = rotas;
