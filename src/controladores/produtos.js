@@ -3,6 +3,7 @@ const {uploadImagem} = require("../servicos/upload");
 
 const cadastrarProduto = async (req, res) => {
 	const {descricao, quantidade_estoque, valor, categoria_id} = req.body;
+
 	let produto_imagem = null;
 
 	if (req.file) {
@@ -149,33 +150,94 @@ const detalharProduto = async (req, res) => {
 };
 
 const editarProduto = async (req, res) => {
+	const {descricao, quantidade_estoque, valor, categoria_id} = req.body;
+
 	const {id} = req.params;
 
-	try {
-		const produtoExistente = await knex("produtos").where({id}).first();
+	let produto_imagem = undefined;
+	
 
-		if (!produtoExistente) {
-			return res.status(400).json("O produto informado não existe");
+	if (req.file) {
+		const {originalname, mimetype, buffer} = req.file;
+
+		try {
+			const produtoExistente = await knex("produtos").where({id}).first();
+
+			if (!produtoExistente) {
+				return res.status(400).json("O produto informado não existe");
+			}
+
+			const categoriaExistente = await knex("categorias")
+				.where({id: categoria_id})
+				.first();
+			
+			if (!categoriaExistente) {
+				return res.status(400).json("A categoria informada não existe.");
+			}
+
+			let produto = await knex("produtos")
+				.update({
+					descricao,
+					quantidade_estoque,
+					valor,
+					categoria_id,
+					produto_imagem,
+				})
+				.where({id});
+			if (!produto) {
+				return res.status(400).json("O produto não foi atualizado.");
+			}
+
+			const imagemDoProduto = await uploadImagem(
+				`produtos/${id}/${originalname}`,
+				buffer,
+				mimetype
+			);
+
+			produto = await knex("produtos")
+				.update({
+					produto_imagem: imagemDoProduto.url,
+				})
+				.where({id})
+				.returning("*");
+
+			return res.status(201).json(produto[0]);
+		} catch (error) {
+			return res.status(400).json(error.message);
 		}
+	} else {
+		try {
+			const produtoExistente = await knex("produtos").where({id}).first();
 
-		const categoriaExistente = await knex("categorias")
-			.where({id: categoria_id})
-			.first();
+			if (!produtoExistente) {
+				return res.status(400).json("O produto informado não existe");
+			}
+			const categoriaExistente = await knex("categorias")
+				.where({id:categoria_id})
+				.first();
 
-		if (!categoriaExistente) {
-			return res.status(400).json("A categoria informada não existe.");
+			if (!categoriaExistente) {
+				return res.status(404).json("A categoria informada não existe.");
+			}
+
+			let produto = await knex("produtos")
+				.insert({
+					descricao,
+					quantidade_estoque,
+					valor,
+					categoria_id,
+					produto_imagem,
+				})
+				.returning("*");
+
+			if (!produto) {
+				return res.status(400).json("O produto não foi cadastrado.");
+			}
+					
+			return res.status(201).json(produto[0]);
+		} catch (error) {
+			return res.status(400).json(error.message);
 		}
-
-		const produto = await knex("produtos")
-			.update({
-				descricao,
-				quantidade_estoque,
-				valor,
-				categoria_id,
-			})
-			.where({id});
-	} catch (error) {
-		return res.status(400).json(error.message);
 	}
 };
 

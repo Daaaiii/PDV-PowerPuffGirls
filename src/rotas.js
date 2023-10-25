@@ -81,7 +81,7 @@ rotas.post(
 );
 rotas.put(
 	"/produto/:id",
-	validarRequisicao(atualizarProdutoSchema),
+	validarRequisicao(atualizarProdutoSchema),multer.single('produto_imagem'),
 	editarProduto
 	// #swagger.tags = ['Produto']
 	// #swagger.description = 'Endpoint para editar produto.
