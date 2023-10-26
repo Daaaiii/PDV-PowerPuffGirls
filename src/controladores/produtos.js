@@ -109,8 +109,7 @@ const listarProdutos = async (req, res) => {
 };
 
 const excluirProduto = async (req, res) => {
-	//TODO: aplicar validação na exclusão do produto
-	//TODO: aprimorar exclusao da imagem do produto
+	
 	const {id} = req.params;
 
 	try {
@@ -120,6 +119,12 @@ const excluirProduto = async (req, res) => {
 			return res.status(400).json("O produto informado não existe");
 		}
 
+        const produtoComPedido = await knex("pedido_produtos").where({ produto_id: id }).first();
+
+            if (produtoComPedido) {
+            return res.status(400).json({mensagem:"Não é possível excluir o produto, pois ele está vinculado a um pedido.",
+        });
+    }
 		const produtoExcluido = await knex("produtos")
 			.del()
 			.where({id})
