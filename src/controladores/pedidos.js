@@ -85,19 +85,6 @@ const cadastrarPedido = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro ao cadastrar o pedido' });
     }
-    if(!cliente_id) {
-        return res.status(400).json({mensagem: "O campo cliente_id é obrigatório."});
-    }
-
-    if(!pedido_produtos) {
-        return res.status(400).json({mensagem: "O campo pedido_produtos é obrigatório."});
-    }
-
-    const clienteExiste = await knex("clientes").where({id: cliente_id}).first();
-    if (!clienteExiste) {
-        return res.status(404).json({mensagem: "Cliente não encontrado"});
-    }
-
 }
 
 module.exports = {
