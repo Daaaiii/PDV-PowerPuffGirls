@@ -96,7 +96,7 @@ rotas.get("/produto/:id", detalharProduto
 // #swagger.tags = ['Produto']
 // #swagger.description = 'Endpoint para detalhar produto.
 );
-rotas.delete("produto/:id", excluirProduto 
+rotas.delete("/produto/:id", excluirProduto 
 // #swagger.tags = ['Produto']
 // #swagger.description = 'Endpoint para excluir produto.
 );
