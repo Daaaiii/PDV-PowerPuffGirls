@@ -66,6 +66,8 @@ npm i
 | Multer         |1.4.5-lts.1|
 | Swagger        | 5.0.0   |
 | Swagger AutoGen| 2.23.6  |
+| Handlebars     | 4.7.8  |
+| Nodemailer     | 6.9.7  |
 
 4) Inicialize o servidor local:
 
