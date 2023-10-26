@@ -1,4 +1,6 @@
 const knex = require("../db");
+const {transport} = require("../email/email");
+const compiladorHtml = require("../utils/compiladorHtml");
 
 const listarPedidos = async (req, res) => {
 	const {cliente_id} = req.query;
@@ -58,7 +60,6 @@ const cadastrarPedido = async (req, res) => {
 			return res.status(404).json("O cliente informado não existe.");
 		}
 		let valorTotal = 0;
-		//Verificar se produto existe
 		for (let i = 0; i < pedido_produtos.length; i++) {
 			let idProduto = pedido_produtos[i].produto_id;
 
@@ -70,7 +71,6 @@ const cadastrarPedido = async (req, res) => {
 				return res.status(404).json("O produto informado não existe.");
 			}
 
-			//verificar se estoque é suficiente
 			const quantidadeSolicitada = pedido_produtos[i].quantidade_produto;
 
 			const estoque = produtoExiste[0].quantidade_estoque;
@@ -83,7 +83,6 @@ const cadastrarPedido = async (req, res) => {
 					);
 			}
 
-			//Calcular o valor do pedido
 			const precoProduto = produtoExiste[0].valor;
 			valorTotal += precoProduto * quantidadeSolicitada;
 		}
@@ -103,13 +102,37 @@ const cadastrarPedido = async (req, res) => {
 			const quantidadeSolicitada = pedido_produtos[i].quantidade_produto;
 			const precoProduto = produtoExiste[0].valor;
 
-			await knex("pedido_produtos").insert({
-				pedido_id: pedido[0].id,
-				produto_id: idProduto,
-				quantidade_produto: quantidadeSolicitada,
-				valor_produto: precoProduto,
-			});
+//! retirar do estoque quando compra é confirmada
+
+			await knex("pedido_produtos")
+				.insert({
+					pedido_id: pedido[0].id,
+					produto_id: idProduto,
+					quantidade_produto: quantidadeSolicitada,
+					valor_produto: precoProduto,
+				})
+				.returning("*");
 		}
+
+		const {nome, email} = clienteExiste[0];
+		
+		const pedidoEmail = await compiladorHtml(
+			"./src/email/templates/pedido.html",
+
+			{
+				cliente: nome,
+				pedido: pedido[0].id,
+                valor: pedido[0].valor_total/100
+			}
+		);
+        
+
+		transport.sendMail({
+			from: process.env.EMAIL_FROM,
+			to: `${nome} <${email}>`,
+			subject: "Pedido da PowerPuffGirls",
+			html: pedidoEmail,
+		});
 
 		return res.status(201).json(pedido);
 	} catch (error) {
