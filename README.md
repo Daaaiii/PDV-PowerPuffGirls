@@ -1,6 +1,9 @@
 ![](https://i.imgur.com/xG74tOh.png)
 
 # API PDV Power Puff Girls 🖥️
+<div align="center">
+<img src='https://assets.stickpng.com/images/59cfc96ed3b1936210a5ddde.png'>
+</div>
 
 ## Sobre o projeto
 
