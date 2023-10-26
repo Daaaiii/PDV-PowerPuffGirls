@@ -24,6 +24,9 @@ const {
 	detalharProduto,
 	editarProduto,
 } = require("./controladores/produtos");
+const {
+	cadastrarPedido
+} = require("./controladores/pedidos");
 
 const loginSchema = require("./validacoes/login");
 const usuarioSchema = require("./validacoes/usuario");
@@ -31,6 +34,7 @@ const clienteSchema = require("./validacoes/cliente");
 const produtoSchema = require("./validacoes/produto");
 const atualizarClienteSchema = require("./validacoes/atualizarCliente");
 const atualizarProdutoSchema = require("./validacoes/atualizarproduto");
+
 
 const rotas = express();
 
@@ -121,7 +125,8 @@ rotas.get("/cliente/:id?", detalharCliente
 // #swagger.description = 'Endpoint para detalhar cliente.
 );
 
-rotas.post('/pedido', 
+rotas.post('/pedido',
+	cadastrarPedido
 // #swagger.tags = ['Pedido']
 // #swagger.description = 'Endpoint para cadastrar pedido.
 )
