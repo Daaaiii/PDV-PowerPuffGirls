@@ -52,7 +52,7 @@ const listarPedidos = async (req, res) => {
 
 const cadastrarPedido = async (req, res) => {
     const { cliente_id, observacao, pedido_produtos } = req.body;
-
+console.log(cliente_id, observacao, pedido_produtos)
     try {
         const valor_total = 0;
         for(let pedido of pedido_produtos) {
