@@ -1,9 +1,8 @@
 const knex = require("../db");
-const {uploadImagem} = require("../servicos/upload");
+const {uploadImagem, excluirImagem} = require("../servicos/upload");
 
 const cadastrarProduto = async (req, res) => {
 	const {descricao, quantidade_estoque, valor, categoria_id} = req.body;
-
 	let produto_imagem = null;
 
 	if (req.file) {
@@ -16,6 +15,11 @@ const cadastrarProduto = async (req, res) => {
 
 			if (!categoriaExistente) {
 				return res.status(404).json("A categoria informada não existe.");
+			}
+
+			if(quantidade_estoque < 0 || valor < 0)
+			{
+				return res.status(400).json("Não são permitidos valores negativos.");
 			}
 
 			let produto = await knex("produtos")
@@ -109,22 +113,40 @@ const listarProdutos = async (req, res) => {
 };
 
 const excluirProduto = async (req, res) => {
-	//TODO: aplicar validação na exclusão do produto
-	//TODO: aprimorar exclusao da imagem do produto
+
 	const {id} = req.params;
 
 	try {
 		const produtoExistente = await knex("produtos").where({id}).first();
-
 		if (!produtoExistente) {
 			return res.status(400).json("O produto informado não existe");
 		}
 
+
+        const produtoComPedido = await knex("pedido_produtos").where({ produto_id: id }).first();
+
+            if (produtoComPedido) {
+            return res.status(400).json({mensagem:"Não é possível excluir o produto, pois ele está vinculado a um pedido.",
+        });
+    }
+
+		const imagemURL = produtoExistente.produto_imagem;
+		
+		if(imagemURL !== null) {
+			await excluirImagem(imagemURL);
+		}
+
 		const produtoExcluido = await knex("produtos")
+			.where({ id })
+			.update({
+				produto_imagem: null
+			})
 			.del()
-			.where({id})
-			.returning("*");
-		return res.status(200).json(produtoExcluido);
+		
+		if (!produtoExcluido) {
+			return res.status(400).json("O produto não foi excluído.");
+		}
+		return res.status(200).json("O produto foi excluído com sucesso.");	
 	} catch (error) {
 		return res.status(400).json({mensagem: error.message});
 	}
