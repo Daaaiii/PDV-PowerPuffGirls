@@ -31,7 +31,7 @@ const cadastrarCliente = async (req, res) => {
 
 const listarClientes = async (_, res) => {
 	try {
-		const cliente = await knex("clientes");
+		const cliente = await knex("clientes").orderBy("id", "asc");
 
 		return res.status(200).json(cliente);
 	} catch (error) {
@@ -49,11 +49,10 @@ const editarCliente = async (req, res) => {
 			return res.status(404).json({mensagem: "Cliente não encontrado"});
 		}
 		if (email) {
-            const emailExistente = await knex("clientes").where({email}).first();
+			const emailExistente = await knex("clientes").where({email}).first();
 			if (clienteExiste.email !== email && emailExistente) {
 				return res.status(400).json("O email já está em uso por outro cliente");
 			}
-						
 		}
 		if (cpf) {
 			const cpfExistente = await knex("clientes").where({cpf}).first();
@@ -83,33 +82,31 @@ const editarCliente = async (req, res) => {
 };
 
 const detalharCliente = async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const clienteEncontrado = await knex
-        .select("*")
-        .from("clientes")
-        .where({ id })
-        .first();
-  
-      if (!clienteEncontrado) {
-        return res.status(404).json({ mensagem: "Cliente não localizado" });
-      }
-  
-      return res.status(200).json(clienteEncontrado);
-    } catch (error) {
-      return res.status(500).json({ mensagem: error.message });
-    }
-  };
+	const {id} = req.params;
+
+	try {
+		const clienteEncontrado = await knex
+			.select("*")
+			.from("clientes")
+			.where({id})
+			.first();
+
+		if (!clienteEncontrado) {
+			return res.status(404).json({mensagem: "Cliente não localizado"});
+		}
+
+		return res.status(200).json(clienteEncontrado);
+	} catch (error) {
+		return res.status(500).json({mensagem: error.message});
+	}
+};
 
 module.exports = {
-
-    cadastrarCliente,
-    listarClientes,
-    editarCliente,
-    detalharCliente,
+	cadastrarCliente,
+	listarClientes,
+	editarCliente,
+	detalharCliente,
 	cadastrarCliente,
 	listarClientes,
 	editarCliente,
 };
-

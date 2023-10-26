@@ -76,16 +76,16 @@ rotas.get(
 
 rotas.post(
 	"/produto",
-	validarRequisicao(produtoSchema),
 	multer.single("produto_imagem"),
+	validarRequisicao(produtoSchema),
 	cadastrarProduto
 	// #swagger.tags = ['Produto']
 	// #swagger.description = 'Endpoint para cadastrar produto.
 );
 rotas.put(
 	"/produto/:id",
-	validarRequisicao(atualizarProdutoSchema),
 	multer.single("produto_imagem"),
+	validarRequisicao(atualizarProdutoSchema),
 	editarProduto
 	// #swagger.tags = ['Produto']
 	// #swagger.description = 'Endpoint para editar produto.

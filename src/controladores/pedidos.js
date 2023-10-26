@@ -1,5 +1,5 @@
 const knex = require("../db");
-const {transport} = require("../email/email");
+const {transport} = require("../servicos/email/email");
 const compiladorHtml = require("../utils/compiladorHtml");
 
 const listarPedidos = async (req, res) => {
@@ -101,8 +101,13 @@ const cadastrarPedido = async (req, res) => {
 			});
 			const quantidadeSolicitada = pedido_produtos[i].quantidade_produto;
 			const precoProduto = produtoExiste[0].valor;
+			const estoqueAtualizado =
+				produtoExiste[0].quantidade_estoque - quantidadeSolicitada;
 
-//! retirar do estoque quando compra é confirmada
+
+			await knex("produtos")
+				.where({id: idProduto})
+				.update({quantidade_estoque: estoqueAtualizado});
 
 			await knex("pedido_produtos")
 				.insert({
@@ -115,17 +120,16 @@ const cadastrarPedido = async (req, res) => {
 		}
 
 		const {nome, email} = clienteExiste[0];
-		
+
 		const pedidoEmail = await compiladorHtml(
-			"./src/email/templates/pedido.html",
+			"./src/servicos/email/templates/pedido.html",
 
 			{
 				cliente: nome,
 				pedido: pedido[0].id,
-                valor: pedido[0].valor_total/100
+				valor: pedido[0].valor_total / 100,
 			}
 		);
-        
 
 		transport.sendMail({
 			from: process.env.EMAIL_FROM,

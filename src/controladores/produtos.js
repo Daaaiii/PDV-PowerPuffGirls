@@ -17,8 +17,7 @@ const cadastrarProduto = async (req, res) => {
 				return res.status(404).json("A categoria informada não existe.");
 			}
 
-			if(quantidade_estoque < 0 || valor < 0)
-			{
+			if (quantidade_estoque < 0 || valor < 0) {
 				return res.status(400).json("Não são permitidos valores negativos.");
 			}
 
@@ -101,9 +100,11 @@ const listarProdutos = async (req, res) => {
 				return res.status(400).json("A categoria informada não existe.");
 			}
 
-			produtos = await knex("produtos").where({categoria_id});
+			produtos = await knex("produtos")
+				.where({categoria_id})
+				.orderBy("id", "asc");
 		} else {
-			produtos = await knex("produtos").select("*");
+			produtos = await knex("produtos").select("*").orderBy("id", "asc");;
 		}
 
 		return res.status(200).json(produtos);
@@ -113,7 +114,6 @@ const listarProdutos = async (req, res) => {
 };
 
 const excluirProduto = async (req, res) => {
-
 	const {id} = req.params;
 
 	try {
@@ -122,31 +122,34 @@ const excluirProduto = async (req, res) => {
 			return res.status(400).json("O produto informado não existe");
 		}
 
+		const produtoComPedido = await knex("pedido_produtos")
+			.where({produto_id: id})
+			.first();
 
-        const produtoComPedido = await knex("pedido_produtos").where({ produto_id: id }).first();
-
-            if (produtoComPedido) {
-            return res.status(400).json({mensagem:"Não é possível excluir o produto, pois ele está vinculado a um pedido.",
-        });
-    }
+		if (produtoComPedido) {
+			return res.status(400).json({
+				mensagem:
+					"Não é possível excluir o produto, pois ele está vinculado a um pedido.",
+			});
+		}
 
 		const imagemURL = produtoExistente.produto_imagem;
-		
-		if(imagemURL !== null) {
+
+		if (imagemURL !== null) {
 			await excluirImagem(imagemURL);
 		}
 
 		const produtoExcluido = await knex("produtos")
-			.where({ id })
+			.where({id})
 			.update({
-				produto_imagem: null
+				produto_imagem: null,
 			})
-			.del()
-		
+			.del();
+
 		if (!produtoExcluido) {
 			return res.status(400).json("O produto não foi excluído.");
 		}
-		return res.status(200).json("O produto foi excluído com sucesso.");	
+		return res.status(200).json("O produto foi excluído com sucesso.");
 	} catch (error) {
 		return res.status(400).json({mensagem: error.message});
 	}
@@ -177,7 +180,6 @@ const editarProduto = async (req, res) => {
 	const {id} = req.params;
 
 	let produto_imagem = undefined;
-	
 
 	if (req.file) {
 		const {originalname, mimetype, buffer} = req.file;
@@ -192,7 +194,7 @@ const editarProduto = async (req, res) => {
 			const categoriaExistente = await knex("categorias")
 				.where({id: categoria_id})
 				.first();
-			
+
 			if (!categoriaExistente) {
 				return res.status(400).json("A categoria informada não existe.");
 			}
@@ -223,7 +225,7 @@ const editarProduto = async (req, res) => {
 				.where({id})
 				.returning("*");
 
-			return res.status(201).json(produto[0]);
+			return res.status(200).json(produto[0]);
 		} catch (error) {
 			return res.status(400).json(error.message);
 		}
@@ -235,7 +237,7 @@ const editarProduto = async (req, res) => {
 				return res.status(400).json("O produto informado não existe");
 			}
 			const categoriaExistente = await knex("categorias")
-				.where({id:categoria_id})
+				.where({id: categoria_id})
 				.first();
 
 			if (!categoriaExistente) {
@@ -255,7 +257,7 @@ const editarProduto = async (req, res) => {
 			if (!produto) {
 				return res.status(400).json("O produto não foi cadastrado.");
 			}
-					
+
 			return res.status(201).json(produto[0]);
 		} catch (error) {
 			return res.status(400).json(error.message);
