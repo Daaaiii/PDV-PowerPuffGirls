@@ -4,8 +4,8 @@ const {
 	editarUsuario,
 	detalharUsuario,
 } = require("./controladores/usuarios");
-const {login} = require("./controladores/login");
-const {categoria} = require("./controladores/categoria");
+const { login } = require("./controladores/login");
+const { categoria } = require("./controladores/categoria");
 const verificaLogin = require("./intermediarios/verificaLogin");
 const validarRequisicao = require("./intermediarios/validaRequisicao");
 
@@ -22,6 +22,9 @@ const {
 	detalharProduto,
 	editarProduto,
 } = require("./controladores/produtos");
+const {
+	listarPedidos
+} = require("./controladores/pedidos");
 
 const loginSchema = require("./validacoes/login");
 const usuarioSchema = require("./validacoes/usuario");
@@ -60,5 +63,7 @@ rotas.put(
 );
 rotas.get("/cliente", listarClientes);
 rotas.get("/cliente/:id?", detalharCliente);
+
+rotas.get("/pedido", listarPedidos);
 
 module.exports = rotas;
