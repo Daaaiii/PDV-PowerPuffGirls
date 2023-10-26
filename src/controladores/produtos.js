@@ -17,6 +17,11 @@ const cadastrarProduto = async (req, res) => {
 				return res.status(404).json("A categoria informada não existe.");
 			}
 
+			if(quantidade_estoque < 0 || valor < 0)
+			{
+				return res.status(400).json("Não são permitidos valores negativos.");
+			}
+
 			let produto = await knex("produtos")
 				.insert({
 					descricao,
