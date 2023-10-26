@@ -1,9 +1,8 @@
 const knex = require("../db");
-const {uploadImagem} = require("../servicos/upload");
+const {uploadImagem, excluirImagem} = require("../servicos/upload");
 
 const cadastrarProduto = async (req, res) => {
 	const {descricao, quantidade_estoque, valor, categoria_id} = req.body;
-
 	let produto_imagem = null;
 
 	if (req.file) {
@@ -110,21 +109,31 @@ const listarProdutos = async (req, res) => {
 
 const excluirProduto = async (req, res) => {
 	//TODO: aplicar validação na exclusão do produto
-	//TODO: aprimorar exclusao da imagem do produto
 	const {id} = req.params;
 
 	try {
 		const produtoExistente = await knex("produtos").where({id}).first();
-
 		if (!produtoExistente) {
 			return res.status(400).json("O produto informado não existe");
 		}
 
+		const imagemURL = produtoExistente.produto_imagem;
+		
+		if(imagemURL !== null) {
+			await excluirImagem(imagemURL);
+		}
+
 		const produtoExcluido = await knex("produtos")
+			.where({ id })
+			.update({
+				produto_imagem: null
+			})
 			.del()
-			.where({id})
-			.returning("*");
-		return res.status(200).json(produtoExcluido);
+		
+		if (!produtoExcluido) {
+			return res.status(400).json("O produto não foi excluído.");
+		}
+		return res.status(200).json("O produto foi excluído com sucesso.");	
 	} catch (error) {
 		return res.status(400).json({mensagem: error.message});
 	}
