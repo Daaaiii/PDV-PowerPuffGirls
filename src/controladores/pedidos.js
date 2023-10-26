@@ -1,93 +1,124 @@
 const knex = require("../db");
 
 const listarPedidos = async (req, res) => {
-    const { cliente_id } = req.query;
+	const {cliente_id} = req.query;
 
-    try {
-        if (cliente_id) {
-            const encontrarCliente = await knex('clientes').where('id', cliente_id);
+	try {
+		if (cliente_id) {
+			const encontrarCliente = await knex("clientes").where("id", cliente_id);
 
-            if (encontrarCliente) {
-                const pedidosCliente = await knex('pedidos').where(
-                    'cliente_id',
-                    cliente_id
-                );
+			if (encontrarCliente) {
+				const pedidosCliente = await knex("pedidos").where(
+					"cliente_id",
+					cliente_id
+				);
 
-                const todosPedidosArray = [];
+				const todosPedidosArray = [];
 
-                for (let pedido of pedidosCliente) {
-                    const pedido_produtos = await knex('pedido_produtos').where(
-                        'pedido_id',
-                        pedido.id
-                    );
+				for (let pedido of pedidosCliente) {
+					const pedido_produtos = await knex("pedido_produtos").where(
+						"pedido_id",
+						pedido.id
+					);
 
-                    todosPedidosArray.push({ pedido, pedido_produtos });
-                }
+					todosPedidosArray.push({pedido, pedido_produtos});
+				}
 
-                return res.status(200).json(todosPedidosArray);
-            } else {
-                return res.status(404).json({ mensagem: 'Cliente não encontrado' });
-            }
-        }
+				return res.status(200).json(todosPedidosArray);
+			} else {
+				return res.status(404).json({mensagem: "Cliente não encontrado"});
+			}
+		}
 
-        const todosPedidos = await knex('pedidos');
+		const todosPedidos = await knex("pedidos");
 
-        const todosPedidosArray = [];
+		const todosPedidosArray = [];
 
-        for (let pedido of todosPedidos) {
-            const pedido_produtos = await knex('pedido_produtos').where(
-                'pedido_id',
-                pedido.id
-            );
+		for (let pedido of todosPedidos) {
+			const pedido_produtos = await knex("pedido_produtos").where(
+				"pedido_id",
+				pedido.id
+			);
 
-            todosPedidosArray.push({ pedido, pedido_produtos });
-        }
+			todosPedidosArray.push({pedido, pedido_produtos});
+		}
 
-        return res.status(200).json(todosPedidosArray);
-    } catch (error) {
-        return res.status(500).json({ mensagem: 'Erro ao listar todos os pedidos' });
-    }
+		return res.status(200).json(todosPedidosArray);
+	} catch (error) {
+		return res.status(500).json({mensagem: "Erro ao listar todos os pedidos"});
+	}
 };
 
-
 const cadastrarPedido = async (req, res) => {
-    const { cliente_id, observacao, pedido_produtos } = req.body;
-console.log(cliente_id, observacao, pedido_produtos)
-    try {
-        const valor_total = 0;
-        for(let pedido of pedido_produtos) {
-            let produto_id = pedido[0];
-            let quantidade_produto = pedido[1];
+	const {cliente_id, observacao, pedido_produtos} = req.body;
 
-            const produto = await knex('produtos').where({id: produto_id});
+	try {
+		const clienteExiste = await knex("clientes").where({id: cliente_id});
+		if (!clienteExiste) {
+			return res.status(404).json("O cliente informado não existe.");
+		}
+		let valorTotal = 0;
+		//Verificar se produto existe
+		for (let i = 0; i < pedido_produtos.length; i++) {
+			let idProduto = pedido_produtos[i].produto_id;
 
-            if(!produto) {
-                return res.status(404).json('O produto informado não existe.');
-            };
+			const produtoExiste = await knex("produtos").where({
+				id: idProduto,
+			});
 
-            if(estoque < produto.quantidade_produto) {
-                return res.status(400).json('A quantidade de produtos requisitada não tem no estoque');
-            }
+			if (!produtoExiste) {
+				return res.status(404).json("O produto informado não existe.");
+			}
 
-            valor_total += produto.valor * quantidade_produto;
-        }
+			//verificar se estoque é suficiente
+			const quantidadeSolicitada = pedido_produtos[i].quantidade_produto;
 
-        const pedido = await knex("pedidos")
-				.insert({
-                    cliente_id,
-                    observacao,
-                    valor_total
-				})
-				.returning("*");
+			const estoque = produtoExiste[0].quantidade_estoque;
 
-        return res.status(201).json(pedido);
-        
-    } catch (error) {
-        return res.status(500).json({ mensagem: 'Erro ao cadastrar o pedido' });
-    }
-}
+			if (estoque < quantidadeSolicitada) {
+				return res
+					.status(400)
+					.json(
+						"A quantidade de produtos requisitada não está disponível no estoque"
+					);
+			}
+
+			//Calcular o valor do pedido
+			const precoProduto = produtoExiste[0].valor;
+			valorTotal += precoProduto * quantidadeSolicitada;
+		}
+		const pedido = await knex("pedidos")
+			.insert({
+				cliente_id,
+				observacao,
+				valor_total: valorTotal,
+			})
+			.returning("*");
+
+		for (let i = 0; i < pedido_produtos.length; i++) {
+			const idProduto = pedido_produtos[i].produto_id;
+			const produtoExiste = await knex("produtos").where({
+				id: idProduto,
+			});
+			const quantidadeSolicitada = pedido_produtos[i].quantidade_produto;
+			const precoProduto = produtoExiste[0].valor;
+
+			await knex("pedido_produtos").insert({
+				pedido_id: pedido[0].id,
+				produto_id: idProduto,
+				quantidade_produto: quantidadeSolicitada,
+				valor_produto: precoProduto,
+			});
+		}
+
+		return res.status(201).json(pedido);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json(error.message);
+	}
+};
 
 module.exports = {
-    listarPedidos,
-    cadastrarPedido
+	listarPedidos,
+	cadastrarPedido,
 };
