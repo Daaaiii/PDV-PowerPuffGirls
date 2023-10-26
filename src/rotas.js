@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("./intermediarios/multer");
+
 const {
 	cadastrarUsuario,
 	editarUsuario,
@@ -22,6 +24,7 @@ const {
 	detalharProduto,
 	editarProduto,
 } = require("./controladores/produtos");
+const {listarPedidos, cadastrarPedido} = require("./controladores/pedidos");
 
 const loginSchema = require("./validacoes/login");
 const usuarioSchema = require("./validacoes/usuario");
@@ -29,6 +32,7 @@ const clienteSchema = require("./validacoes/cliente");
 const produtoSchema = require("./validacoes/produto");
 const atualizarClienteSchema = require("./validacoes/atualizarCliente");
 const atualizarProdutoSchema = require("./validacoes/atualizarproduto");
+const pedidoSchema = require("./validacoes/pedido");
 
 const rotas = express();
 
@@ -72,6 +76,7 @@ rotas.get(
 
 rotas.post(
 	"/produto",
+	multer.single("produto_imagem"),
 	validarRequisicao(produtoSchema),
 	cadastrarProduto
 	// #swagger.tags = ['Produto']
@@ -79,6 +84,7 @@ rotas.post(
 );
 rotas.put(
 	"/produto/:id",
+	multer.single("produto_imagem"),
 	validarRequisicao(atualizarProdutoSchema),
 	editarProduto
 	// #swagger.tags = ['Produto']
@@ -90,33 +96,58 @@ rotas.get(
 	// #swagger.tags = ['Produto']
 	// #swagger.description = 'Endpoint para listar produto.
 );
-rotas.get("/produto/:id", detalharProduto 
-// #swagger.tags = ['Produto']
-// #swagger.description = 'Endpoint para detalhar produto.
+rotas.get(
+	"/produto/:id",
+	detalharProduto
+	// #swagger.tags = ['Produto']
+	// #swagger.description = 'Endpoint para detalhar produto.
 );
-rotas.delete("produto/:id", excluirProduto 
-// #swagger.tags = ['Produto']
-// #swagger.description = 'Endpoint para excluir produto.
+rotas.delete(
+	"/produto/:id",
+	excluirProduto
+	// #swagger.tags = ['Produto']
+	// #swagger.description = 'Endpoint para excluir produto.
 );
 
-rotas.post("/cliente", validarRequisicao(clienteSchema), cadastrarCliente 
-// #swagger.tags = ['Cliente']
-// #swagger.description = 'Endpoint para cadastrar cliente.
+rotas.post(
+	"/cliente",
+	validarRequisicao(clienteSchema),
+	cadastrarCliente
+	// #swagger.tags = ['Cliente']
+	// #swagger.description = 'Endpoint para cadastrar cliente.
 );
 rotas.put(
 	"/cliente/:id",
 	validarRequisicao(atualizarClienteSchema),
 	editarCliente
 	// #swagger.tags = ['Cliente']
-// #swagger.description = 'Endpoint para atualizar cliente.
+	// #swagger.description = 'Endpoint para atualizar cliente.
 );
-rotas.get("/cliente", listarClientes
-// #swagger.tags = ['Cliente']
-// #swagger.description = 'Endpoint para listar clientes.
+rotas.get(
+	"/cliente",
+	listarClientes
+	// #swagger.tags = ['Cliente']
+	// #swagger.description = 'Endpoint para listar clientes.
 );
-rotas.get("/cliente/:id?", detalharCliente
-// #swagger.tags = ['Cliente']
-// #swagger.description = 'Endpoint para detalhar cliente.
+rotas.get(
+	"/cliente/:id?",
+	detalharCliente
+	// #swagger.tags = ['Cliente']
+	// #swagger.description = 'Endpoint para detalhar cliente.
+);
+
+rotas.post(
+	"/pedido",
+	validarRequisicao(pedidoSchema),
+	cadastrarPedido
+	// #swagger.tags = ['Pedido']
+	// #swagger.description = 'Endpoint para cadastrar pedido.
+);
+rotas.get(
+	"/pedido",
+	listarPedidos
+	// #swagger.tags = ['Pedido']
+	// #swagger.description = 'Endpoint para listar pedidos.
 );
 
 module.exports = rotas;

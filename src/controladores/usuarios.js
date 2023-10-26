@@ -73,9 +73,8 @@ const detalharUsuario = async (req, res) => {
 			return res.status(404).json({mensagem: "Usuário não encontrado"});
 		}
 
-		const {id, nome, email} = usuarioAutenticado;
 
-		return res.status(200).json(id, nome, email);
+		return res.status(200).json(usuarioAutenticado);
 	} catch (error) {
 		return res.status(500).json({mensagem: error.message});
 	}

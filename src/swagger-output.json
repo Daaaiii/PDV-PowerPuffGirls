@@ -48,13 +48,13 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "string"
                 }
               }
             }
@@ -87,13 +87,13 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "string"
                 }
               }
             }
@@ -132,10 +132,10 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "string"
                 }
               }
             }
@@ -208,16 +208,19 @@
               "type": "object",
               "properties": {
                 "descricao": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "quantidade_estoque": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "valor": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "categoria_id": {
-                  "example": "any"
+                  "example": "number"
+                },
+                "produto_imagem": {
+                  "'example": "file"
                 }
               }
             }
@@ -296,24 +299,30 @@
               "type": "object",
               "properties": {
                 "descricao": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "quantidade_estoque": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "valor": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "categoria_id": {
-                  "example": "any"
+                  "example": "number"
+                },
+                "produto_imagem": {
+                  "'example": "file"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"
@@ -325,9 +334,7 @@
             "description": "Not Found"
           }
         }
-      }
-    },
-    "/produto/{id}": {
+      },
       "get": {
         "tags": [
           "Produto"
@@ -363,9 +370,7 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "produto/{id}": {
+      },
       "delete": {
         "tags": [
           "Produto"
@@ -400,7 +405,7 @@
         }
       }
     },
-    "/cliente": {
+    "\t/cliente": {
       "post": {
         "tags": [
           "Cliente"
@@ -419,31 +424,31 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "cpf": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "cep": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "rua": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "numero": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "bairro": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "cidade": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "estado": {
-                  "example": "any"
+                  "example": "string"
                 }
               }
             }
@@ -517,31 +522,31 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "cpf": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "cep": {
-                  "example": "any"
+                  "example": "number"
                 },
                 "rua": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "numero": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "bairro": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "cidade": {
-                  "example": "any"
+                  "example": "string"
                 },
                 "estado": {
-                  "example": "any"
+                  "example": "string"
                 }
               }
             }
@@ -566,12 +571,12 @@
         }
       }
     },
-    "/cliente/{id?}": {
+    "\t/cliente/{id?}": {
       "get": {
         "tags": [
           "Cliente"
         ],
-        "description": "Endpoint para detalhar cliente.",
+        "description": "",
         "parameters": [
           {
             "name": "id?",
@@ -582,6 +587,91 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "\t/pedido": {
+      "post": {
+        "tags": [
+          "Pedido"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cliente_id": {
+                  "example": "number"
+                },
+                "observacao": {
+                  "example": "string"
+                },
+                "pedido_produtos": {
+                  "example": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "description": "Endpoint para listar pedidos.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "cliente_id",
+            "in": "query",
             "type": "string"
           }
         ],

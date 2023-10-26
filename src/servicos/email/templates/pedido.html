@@ -1,0 +1,65 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pedido</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			img {
+				height: 100px;
+				object-fit: cover;
+			}
+
+			div {
+				margin: 10px;
+			}
+			.cliente {
+				color: palevioletred;
+			}
+			h2 {
+				font-weight: bold;
+			}
+			p {
+				font-size: 20px;
+			}
+			.marca {
+				color: palevioletred;
+				font-weight: bold;
+			}
+			.valor {
+				color: palevioletred;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<img
+				src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSralP0P1s2L4uXQrgrJJ_G0mhEanr2zFlsVw&usqp=CAU"
+				alt="logo da loja"
+			/>
+		</header>
+		<div class="container">
+			<div>
+				<h1 class="cliente">Olá, {{cliente}}</h1>
+			</div>
+			<div>
+				<p>
+					Muito obrigada por comprar na
+					<span class="marca">PowerPuffGirls</span>.
+				</p>
+			</div>
+			<div>
+				<h2>Pedido #{{pedido}}</h2>
+			</div>
+			<div>
+				<h2 class="valor">Valor total R${{valor}}</h2>
+			</div>
+		</div>
+	</body>
+</html>

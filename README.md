@@ -1,6 +1,9 @@
 ![](https://i.imgur.com/xG74tOh.png)
 
 # API PDV Power Puff Girls 🖥️
+<div align="center">
+<img src='https://assets.stickpng.com/images/59cfc96ed3b1936210a5ddde.png'>
+</div>
 
 ## Sobre o projeto
 
@@ -23,6 +26,8 @@ A aplicação conta com diversas funcionalidades, permitindo ao usuário se cada
 12. Editar Dados do Cliente
 13. Listar Clientes
 14. Detalhar Cliente
+15. Cadastrar Pedido
+16. Listar Pedidos
 
 ## Como executar o projeto
 
@@ -57,7 +62,10 @@ npm i
 | Joi            | 17.11.0 |
 | Cors           | 2.8.5   |
 | Bcrypt         | 5.1.1   |
+| Aws sdk        | 2.1479.0|
+| Multer         |1.4.5-lts.1|
 | Swagger        | 5.0.0   |
+| Swagger AutoGen| 2.23.6  |
 
 4) Inicialize o servidor local:
 
@@ -150,6 +158,7 @@ Validações:
     -   Verificar se o token enviado é válido;
     -   Validar o preenchimento dos campos obrigatórios;
     -   Validar se a categoria informada existe;
+    -   Caso seja enviada imagem na requisição, a mesma deverá ser processada e armazenada no servidor de armazenamento Blackblaze;
     -   Cadastrar o produto no banco de dados.
 
 7. **Editar dados do produto**
@@ -165,6 +174,7 @@ Validações:
     -   Validar se existe produto para o id enviado como parâmetro na rota;
     -   Validar o preenchimento dos campos obrigatórios;
     -   Validar se a categoria informada existe;
+    -   Caso seja enviada imagem na requisição, a mesma deverá ser processada e armazenada no servidor de armazenamento Blackblaze;
     -   Atualizar as informações do produto no banco de dados.
 
 8. **Listar produtos**
@@ -204,7 +214,9 @@ Validações:
     -   Validar se o token foi enviado no header da requisição (Bearer Token);
     -   Verificar se o token enviado é válido;
     -   Validar se o id de produto informado existe;
-    -   Deletar o produto no banco de dados pelo id dado.
+    -   Validar se o produto que está sendo excluído está vinculado a algum pedido, 
+    -   Caso esteja vinculado a algum pedido, o produto não poderá ser excluído;
+    -   Caso não esteja, deletar o produto no banco de dados pelo id dado e deletar a imagem do produto(caso possua) do servidor.
 
 11. **Cadastrar cliente**
 
@@ -240,7 +252,7 @@ Validações:
 
 #### `GET` `/cliente`
 
-Esse endpoint deverá listar todos os clientes cadastrados. 
+Esse endpoint deverá listar todos os clientes cadastrados.
 
 Validações:
 
@@ -260,6 +272,37 @@ Validações:
     -   Verificar se o token enviado é válido;
     -   Validar se o id de cliente informado existe;
     -   Consultar o cliente no banco de dados pelo id dado.
+
+15. **Cadastrar pedido**
+
+#### `POST` `/pedido`
+
+ Esse endpoint permite o cadastro de pedidos.
+
+Validações:
+
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se existe cliente para o id enviado no corpo (body) da requisição;
+    -   Validar se existe produto para cada produto_id informado dentro do array enviado no corpo (body) da requisição;
+    -   Validar se existe a quantidade em estoque de cada produto existente dentro do array, de acordo com a quantidade informada no corpo (body) da requisição;
+    -   O pedido deverá ser cadastrado, apenas, se todos os produtos estiverem validados;
+    -   Enviar e-mail para o cliente notificando que o pedido foi efetuado com sucesso;
+    -   Cadastrar o pedido no banco de dados.
+
+16. **Listar pedidos**
+
+#### `GET` `/pedido`
+
+ Esse endpoint lista os pedidos cadastrados no sistema, com filtro opcional de cliente.
+
+Validações:
+
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Caso não seja informado um id de cliente como parâmetro do tipo query, o endpoint deverá responder com todos os pedidos cadastrados no sistema;
+    -  Caso seja informado um id de cliente como parâmetro do tipo query, o endpoint deverá responder com todos os pedidos cadastrados no sistema relativo ao cliente informado.
 
 ## Documentação
 
