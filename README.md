@@ -2,7 +2,7 @@
 
 # API PDV Power Puff Girls 🖥️
 <div align="center">
-<img src='https://assets.stickpng.com/images/59cfc96ed3b1936210a5ddde.png'>
+<img src="./ppg.png">
 </div>
 
 ## Sobre o projeto
