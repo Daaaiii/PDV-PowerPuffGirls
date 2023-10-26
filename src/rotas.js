@@ -6,8 +6,8 @@ const {
 	editarUsuario,
 	detalharUsuario,
 } = require("./controladores/usuarios");
-const {login} = require("./controladores/login");
-const {categoria} = require("./controladores/categoria");
+const { login } = require("./controladores/login");
+const { categoria } = require("./controladores/categoria");
 const verificaLogin = require("./intermediarios/verificaLogin");
 const validarRequisicao = require("./intermediarios/validaRequisicao");
 
@@ -24,6 +24,9 @@ const {
 	detalharProduto,
 	editarProduto,
 } = require("./controladores/produtos");
+const {
+	listarPedidos
+} = require("./controladores/pedidos");
 
 const loginSchema = require("./validacoes/login");
 const usuarioSchema = require("./validacoes/usuario");
@@ -96,7 +99,7 @@ rotas.get("/produto/:id", detalharProduto
 // #swagger.tags = ['Produto']
 // #swagger.description = 'Endpoint para detalhar produto.
 );
-rotas.delete("produto/:id", excluirProduto 
+rotas.delete("/produto/:id", excluirProduto 
 // #swagger.tags = ['Produto']
 // #swagger.description = 'Endpoint para excluir produto.
 );
@@ -129,5 +132,7 @@ rotas.get('/pedido',
 // #swagger.tags = ['Pedido']
 // #swagger.description = 'Endpoint para listar pedidos.
 )
+
+rotas.get("/pedido", listarPedidos);
 
 module.exports = rotas;
