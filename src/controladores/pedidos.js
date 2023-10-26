@@ -85,7 +85,6 @@ const cadastrarPedido = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro ao cadastrar o pedido' });
     }
-    
 }
 
 module.exports = {
