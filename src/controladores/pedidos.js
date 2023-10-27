@@ -138,7 +138,7 @@ const cadastrarPedido = async (req, res) => {
 			html: pedidoEmail,
 		});
 
-		return res.status(201).json(pedido);
+		return res.status(200).json(pedido);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json(error.message);

@@ -5,17 +5,19 @@
     "title": "The PowerPuff Girls",
     "description": "API de um PDV desenvolvida no Desafio Final da Cubos Academy"
   },
-  "host": "localhost:3000",
+  "host": "faithful-bonnet-elk.cyclic.app",
   "basePath": "/",
   "schemes": [
     "http",
     "https"
   ],
   "consumes": [
-    "application/json"
+    "application/json",
+    "multipart/form-data"
   ],
   "produces": [
-    "application/json"
+    "application/json",
+    "multipart/form-data"
   ],
   "paths": {
     "/categoria": {
@@ -634,7 +636,7 @@
                   "example": "string"
                 },
                 "pedido_produtos": {
-                  "example": "number"
+                  "example": "object"
                 }
               }
             }
