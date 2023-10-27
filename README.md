@@ -75,6 +75,10 @@ npm i
 npm run dev
 ```
 
+## Tecnologias Utilizadas
+
+[![My Skills](https://skillicons.dev/icons?i=js,nodejs,postman,express,git,github,postgres,swagger)](https://skillicons.dev)
+
 ⚠️ Para verificar as rotas, pode-se importar o arquivo `Desafio Final.postman_collection.json` no Postman ou Insomnia, ou utilizar a extensão do Postman no VsCode.
 
 ## Verificando os endpoints
@@ -318,9 +322,7 @@ Abra `http://localhost:3000/doc` no navegador para visualizar localmente.
 
 Para visualizar o Swagger no servidor utilize `https://faithful-bonnet-elk.cyclic.app/doc`
 
-## Tecnologias Utilizadas
 
-[![My Skills](https://skillicons.dev/icons?i=js,nodejs,postman,express,git,github,postgres,swagger)](https://skillicons.dev)
 
 ## Deploy
 
