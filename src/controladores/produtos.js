@@ -52,7 +52,7 @@ const cadastrarProduto = async (req, res) => {
 
 			return res.status(201).json(produto[0]);
 		} catch (error) {
-			return res.status(400).json(error.message);
+			return res.status(500).json({mensagem: "Erro interno do servidor"});
 		}
 	} else {
 		try {
@@ -80,7 +80,7 @@ const cadastrarProduto = async (req, res) => {
 
 			return res.status(201).json(produto[0]);
 		} catch (error) {
-			return res.status(400).json(error.message);
+			return res.status(500).json({mensagem: "Erro interno do servidor"});
 		}
 	}
 };
@@ -109,7 +109,7 @@ const listarProdutos = async (req, res) => {
 
 		return res.status(200).json(produtos);
 	} catch (error) {
-		return res.status(400).json({mensagem: error.message});
+		return res.status(500).json({mensagem: "Erro interno do servidor"});
 	}
 };
 
@@ -151,7 +151,7 @@ const excluirProduto = async (req, res) => {
 		}
 		return res.status(200).json("O produto foi excluído com sucesso.");
 	} catch (error) {
-		return res.status(400).json({mensagem: error.message});
+		return res.status(500).json({mensagem: "Erro interno do servidor"});
 	}
 };
 const detalharProduto = async (req, res) => {
@@ -170,7 +170,7 @@ const detalharProduto = async (req, res) => {
 
 		return res.status(200).json(produtoEncontrado);
 	} catch (error) {
-		return res.status(500).json(error.message);
+		return res.status(500).json({mensagem: "Erro interno do servidor"});
 	}
 };
 
@@ -227,7 +227,7 @@ const editarProduto = async (req, res) => {
 
 			return res.status(200).json(produto[0]);
 		} catch (error) {
-			return res.status(400).json(error.message);
+			return res.status(500).json({mensagem: "Erro interno do servidor"});
 		}
 	} else {
 		try {
@@ -260,7 +260,7 @@ const editarProduto = async (req, res) => {
 
 			return res.status(201).json(produto[0]);
 		} catch (error) {
-			return res.status(400).json(error.message);
+			return res.status(500).json({mensagem: "Erro interno do servidor"});
 		}
 	}
 };
